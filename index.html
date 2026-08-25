@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Wednesday Movie Plan 🎬</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Ambient background: grain + drifting ember particles (pure CSS, respects reduced motion) -->
+<div class="bg-atmosphere" aria-hidden="true">
+  <div class="grain"></div>
+  <div class="vignette"></div>
+  <div class="embers">
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+</div>
+
+<main id="app">
+
+  <!-- STEP 0 — Welcome teaser -->
+  <section class="screen" id="step-0" data-active="true">
+    <div class="stub">EXT · TUE 25:37</div>
+    <h1 class="tease">Hey Briva <span class="wave">👀</span></h1>
+    <p class="lead">Got a small plan for tomorrow…</p>
+    <p class="lead lead-2">And no, you can't guess it. You'll have to tap.</p>
+    <button class="btn btn-primary" id="btn-start">
+      <span>Okay, show me</span> <span class="btn-emoji">🎬</span>
+    </button>
+  </section>
+
+  <!-- STEP 1 — The invitation -->
+  <section class="screen" id="step-1">
+    <p class="eyebrow">Wednesday Movie Plan 🎬</p>
+    <p class="lead">Because sometimes a normal Wednesday needs a little upgrade.</p>
+    <p class="lead lead-2">Want to disappear from the real world for a couple of hours and watch a good movie with me, Briva? <span>😌</span></p>
+    <p class="lead lead-2">Fair warning — I already have good taste. This is just proof.</p>
+    <div class="date-chip">Tomorrow <span class="dot">•</span> Wednesday</div>
+    <button class="btn btn-ghost" id="btn-to-movie">See the movie ↓</button>
+  </section>
+
+  <!-- STEP 2 — Movie card -->
+  <section class="screen" id="step-2">
+    <div class="ticket-card" id="movie-card">
+      <div class="ticket-poster-wrap">
+        <img class="ticket-poster" id="movie-poster" src="poster.jpg" alt="">
+        <div class="ticket-poster-shade"></div>
+        <button class="interest-btn" id="btn-interested" aria-pressed="false">
+          <span class="interest-icon">👀</span> <span id="interest-label">Looks interesting</span>
+        </button>
+      </div>
+      <div class="ticket-body">
+        <h2 class="movie-name" id="movie-name"></h2>
+        <div class="ticket-meta">
+          <div class="meta-row"><span class="meta-k">Cinema</span><span class="meta-v" id="movie-cinema"></span></div>
+          <div class="meta-row"><span class="meta-k">Location</span><span class="meta-v" id="movie-location"></span></div>
+          <div class="meta-row"><span class="meta-k">Date</span><span class="meta-v" id="movie-date"></span></div>
+        </div>
+      </div>
+      <div class="perforation" aria-hidden="true"></div>
+    </div>
+
+    <!-- Cute note, tucked right under the movie card -->
+    <div class="note-card">
+      <p class="note-title">One tiny note, Briva ❤️</p>
+      <p class="note-text">I could have just sent you a message… but where's the fun in that? 😂 So I made you a tiny website instead. Slightly extra, I know. I'm okay with that.</p>
+      <p class="note-text note-sub">Also, no pressure. If tomorrow doesn't work, it doesn't work. But if you say yes… I'm expecting a good movie + good company 😌🎬</p>
+    </div>
+
+    <button class="btn btn-primary" id="btn-to-time">Okay, important question →</button>
+  </section>
+
+  <!-- STEP 3 — Show timing -->
+  <section class="screen" id="step-3">
+    <p class="eyebrow">Okay, important question…</p>
+    <p class="lead">What time works for you? <span>👀</span></p>
+
+    <div class="time-grid" id="time-grid"></div>
+
+    <p class="micro-status" id="time-status" aria-live="polite"></p>
+
+    <button class="btn btn-primary" id="btn-lock-time" disabled>Lock this one 🎟️</button>
+  </section>
+
+  <!-- STEP 4 — Snack question (playful, optional) -->
+  <section class="screen" id="step-4">
+    <p class="eyebrow">Important question…</p>
+    <p class="lead">Who gets to choose the snacks? 🍿</p>
+    <div class="snack-row" id="snack-row">
+      <button class="chip-btn" data-snack="me">Me 😎</button>
+      <button class="chip-btn" data-snack="you">You, obviously 😂</button>
+      <button class="chip-btn" data-snack="fight">Let's fight over it</button>
+    </div>
+    <p class="micro-note">(purely for the plot — it won't change the booking 😌)</p>
+    <button class="btn btn-primary" id="btn-to-decision">Alright, final answer →</button>
+  </section>
+
+  <!-- STEP 5 — The real decision -->
+  <section class="screen" id="step-5">
+    <p class="eyebrow">So…</p>
+    <p class="lead" id="decision-summary"></p>
+
+    <div class="decision-row">
+      <button class="decision-btn decision-yes" id="btn-yes">
+        <span class="dbtn-emoji">❤️</span><span>Yes, let's go</span>
+      </button>
+      <button class="decision-btn decision-maybe" id="btn-maybe">
+        <span class="dbtn-emoji">🤔</span><span>Let me check</span>
+      </button>
+      <button class="decision-btn decision-no" id="btn-no">
+        <span class="dbtn-emoji">😌</span><span>Not tomorrow</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- OUTCOME — YES -->
+  <section class="screen outcome" id="outcome-yes">
+    <div class="confetti-wrap" id="confetti-wrap" aria-hidden="true"></div>
+    <p class="eyebrow">Okayyy 😌❤️</p>
+    <h2 class="tease tease-sm">Wednesday officially has a plan.</h2>
+
+    <div class="confirm-ticket" id="confirm-ticket">
+      <div class="confirm-row"><span>Selected movie</span><strong id="confirm-movie"></strong></div>
+      <div class="confirm-row"><span>Selected time</span><strong id="confirm-time"></strong></div>
+      <div class="confirm-row"><span>Cinema</span><strong id="confirm-cinema"></strong></div>
+      <div class="confirm-stamp" id="confirm-stamp">CONFIRMED</div>
+      <div class="barcode" aria-hidden="true"></div>
+    </div>
+
+    <p class="lead">Perfect. I'll take care of the rest 🎬</p>
+    <a class="btn btn-whatsapp" id="btn-whatsapp-yes" target="_blank" rel="noopener">
+      Send confirmation on WhatsApp
+    </a>
+
+    <button class="secret-btn" id="btn-secret">One more thing 👀</button>
+    <div class="secret-reveal" id="secret-reveal">
+      <p>Honestly, Briva…<br>I just wanted an excuse to spend a couple of hours with you.<br>That's it. ❤️</p>
+    </div>
+  </section>
+
+  <!-- OUTCOME — MAYBE -->
+  <section class="screen outcome" id="outcome-maybe">
+    <p class="eyebrow">No pressure 😊</p>
+    <p class="lead">Check your schedule and let me know.</p>
+    <p class="lead lead-2">I'll leave the decision with you 😌</p>
+    <button class="btn btn-ghost" id="btn-remind-later">Remind me later</button>
+    <p class="micro-status" id="remind-status" aria-live="polite"></p>
+  </section>
+
+  <!-- OUTCOME — NO -->
+  <section class="screen outcome" id="outcome-no">
+    <p class="eyebrow">Fair enough 😌</p>
+    <p class="lead">Another day then.</p>
+    <p class="lead lead-2">Movie plan cancelled.<br>Friendship still safe 😂</p>
+    <a class="btn btn-ghost" id="btn-whatsapp-no" target="_blank" rel="noopener">Maybe another day</a>
+  </section>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
